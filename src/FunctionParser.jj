@@ -1,0 +1,66 @@
+options {
+  STATIC = false;
+}
+
+PARSER_BEGIN(FunctionParser)
+
+/** Simple brace matcher. */
+public class FunctionParser {
+
+  /** Main entry point. */
+  public static void main(String args[]) 
+  throws ParseException/*ParseError*/, TokenMgrError /*LexicalError*/ {
+    FunctionParser parser = new FunctionParser(System.in);
+    parser.Start();
+  }
+
+}
+
+PARSER_END(FunctionParser)
+
+SKIP  : { " "| "\t"| "\n"| "\r"| "\r\n"}
+TOKEN : { < OBRAC : "("> }
+TOKEN : { < CBRAC : ")"> }
+TOKEN : { < COMMA : ","> }
+TOKEN : { < NUMBER : (["0"-"9"])+ > }
+TOKEN : { < G : (["g","G"])+ > }
+TOKEN : { < F : (["f","F"])+ > }
+
+/** Root production. */
+void Start() :
+{
+int value;
+}
+{
+	value = 
+	[
+		evalG()
+		|
+		evalF()
+	]
+	<EOF>
+	{ return value ; }
+}
+
+int evalG()
+{
+	int value = 0;
+	Token t1 ;
+	Token t2 ;
+}
+{
+	<G> <OBRAC> [t1=<NUMBER>] <COMMA> [t2=<NUMBER>] <CBRAC>
+	{ value = Integer.parseInt( t1.image ) + Integer.parseInt( t2.image ) ; }
+	{ return value; }
+}
+
+int evalF()
+{
+	int value = 0;
+	Token t1 ;
+}
+{
+	<F> <OBRAC> [t1=<NUMBER>] <CBRAC>
+	{ value = 2*Integer.parseInt( t1.image ) ; }
+	{ return value; }
+}
