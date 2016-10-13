@@ -1,4 +1,4 @@
-package test.com.ab.func.nodes;
+package com.ab.func.nodes;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
